@@ -10,14 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_31_141128) do
+ActiveRecord::Schema.define(version: 2019_05_31_185239) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "meals", force: :cascade do |t|
     t.string "title"
-    t.string "food_name", default: [], array: true
+    t.string "food_name"
     t.boolean "sick"
     t.string "sick_type"
     t.string "comments"
