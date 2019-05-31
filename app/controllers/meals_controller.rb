@@ -5,7 +5,7 @@ class MealsController < ApplicationController
   def index
     @meals = Meal.all
 
-    render json: @meals
+    render json: @meals.reverse
   end
 
   # GET /meals/1
@@ -18,7 +18,7 @@ class MealsController < ApplicationController
     @meal = Meal.new(meal_params)
 
     if @meal.save
-      render json: @meal, status: :created, location: @meal
+      render json: @meal, status: :created
     else
       render json: @meal.errors, status: :unprocessable_entity
     end
@@ -46,6 +46,6 @@ class MealsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def meal_params
-      params.require(:meal).permit(:title, :food_name, :sick, :sick_type, :comments)
+      params.require(:meal).permit(:title, :food_name, :sick, :sick_type, :comments, :user_id)
     end
 end
