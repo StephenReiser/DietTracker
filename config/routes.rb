@@ -1,4 +1,8 @@
 Rails.application.routes.draw do
-  resources :meals
+  root 'welcome#index'
+  resources :users do
+    resources :meals
+  end
+  
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end
