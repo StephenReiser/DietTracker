@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
-  # skip_before_action :verify_authenticity_token, raise: false
-  before_action :authenticate_user
+  skip_before_action :verify_authenticity_token, raise: false, only: [:create]
+  before_action :authenticate_user, except: [:create]
   before_action :set_user, only: [:show, :update, :destroy]
 
   # GET /users
