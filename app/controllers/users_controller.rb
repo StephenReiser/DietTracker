@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  
+  skip_before_action :verify_authenticity_token, raise: false
   before_action :set_user, only: [:show, :update, :destroy]
 
   # GET /users
@@ -47,6 +47,6 @@ class UsersController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def user_params
-      params.require(:user).permit(:email, :password_digest, :admin)
+      params.require(:user).permit(:email, :password_digest, :admin, :password, :password_confirmation)
     end
 end
