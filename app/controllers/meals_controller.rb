@@ -1,10 +1,12 @@
 class MealsController < ApplicationController
+  
   before_action :authenticate_user
   before_action :set_meal, only: [:show, :update, :destroy]
 
   # GET /meals
   def index
-    @meals = Meal.all
+    @meals = User.find(params['user_id']).meals
+    puts "params:  #{params['user_id']}"
 
     render json: @meals.reverse
   end

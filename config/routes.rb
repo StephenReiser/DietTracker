@@ -5,9 +5,9 @@ Rails.application.routes.draw do
 
 
 # this is the create token route - not sure if I need to move it
-  post 'user_token' => 
-  'user_token#create'
 
+post 'user_token' => 
+'user_token#create'
   # this has meals nested within users so all meals will be created and associated to a user
   resources :users do
     resources :meals
