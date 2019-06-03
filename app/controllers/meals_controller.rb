@@ -25,7 +25,7 @@ class MealsController < ApplicationController
 
     # Could certainly refactor this down to only show meals and stringResult
 
-    render json: {meals: @meals.reverse, sick: @sick, count: @sickCount, string: @sickString, stringResult: @stringResult.sort_by {|key, value| value}.to_h}
+    render json: {meals: @meals.reverse, sick: @sick, count: @sickCount, string: @sickString, stringResult: @stringResult.sort_by {|key, value| value}}
     # render json: @meals.reverse
   end
 
@@ -36,15 +36,15 @@ class MealsController < ApplicationController
 
   # POST /meals
   def create
-    @meal = Meal.new(meal_params)
-    puts "meal params: #{meal_params['user_id']}"
-    @sick = User.find(meal_params['user_id']).meals.select(:food_name).where("sick": true)
-    @sickString = ''
-    @sick.each {|x| @sickString.concat(" " + x[:food_name])}
-    @stringResult = @sickString.downcase.split.inject(Hash.new(0)) { |h,v| h[v] += 1; h }
-
+    
     if @meal.save
-      render json: {meal: @meal, sickString: @stringResult.sort_by {|key, value| value}.to_h}, status: :created
+      @meal = Meal.new(meal_params)
+      puts "meal params: #{meal_params['user_id']}"
+      @sick = User.find(meal_params['user_id']).meals.select(:food_name).where("sick": true)
+      @sickString = ''
+      @sick.each {|x| @sickString.concat(" " + x[:food_name])}
+      @stringResult = @sickString.downcase.split.inject(Hash.new(0)) { |h,v| h[v] += 1; h }
+      render json: {meal: @meal, sickString: @stringResult.sort_by {|key, value| value}}, status: :created
     else
       render json: @meal.errors, status: :unprocessable_entity
     end
@@ -52,13 +52,13 @@ class MealsController < ApplicationController
 
   # PATCH/PUT /meals/1
   def update
-    @sick = User.find(meal_params['user_id']).meals.select(:food_name).where("sick": true)
-    @sickString = ''
-    @sick.each {|x| @sickString.concat(" " + x[:food_name])}
-    @stringResult = @sickString.downcase.split.inject(Hash.new(0)) { |h,v| h[v] += 1; h }
-
+    
     if @meal.update(meal_params)
-      render json: {meal: @meal, sickString: @stringResult.sort_by {|key, value| value}.to_h}
+      @sick = User.find(meal_params['user_id']).meals.select(:food_name).where("sick": true)
+      @sickString = ''
+      @sick.each {|x| @sickString.concat(" " + x[:food_name])}
+      @stringResult = @sickString.downcase.split.inject(Hash.new(0)) { |h,v| h[v] += 1; h }
+      render json: {meal: @meal, sickString: @stringResult.sort_by {|key, value| value}}
     else
       render json: @meal.errors, status: :unprocessable_entity
     end
