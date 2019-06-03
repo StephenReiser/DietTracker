@@ -25,3 +25,4 @@
 # I input this just incase - shoudl use it for user hashing
 
 .env
+/.env

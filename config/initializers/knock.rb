@@ -1,3 +1,4 @@
+# require 'dotenv'
 Knock.setup do |config|
 
   ## Expiration claim
