@@ -7,8 +7,26 @@ class MealsController < ApplicationController
   def index
     @meals = User.find(params['user_id']).meals
     puts "params:  #{params['user_id']}"
+    puts "all params: #{params}"
+    # puts "chicken: #{User.find(1).meals.where(["food_name like ? and sick = ?", "%Apples%", true])}"
+    # @apples = User.find(1).meals.where(["food_name like ? and sick = ?", "%Apples%", true])
+    # @apples = @meals.where(["food_name like ? and sick = ?", "%Apples%", true])
 
-    render json: @meals.reverse
+
+    # Seems like I need to add this whole section to create and post routes?????
+    @sick = @meals.select(:food_name).where("sick": true)
+    @sickCount = @sick.group(:food_name).count
+    @sickString = ''
+    @sick.each {|x| @sickString.concat(" " + x[:food_name])}
+    @stringResult = @sickString.split.inject(Hash.new(0)) { |h,v| h[v] += 1; h }
+
+
+    puts "apple test: #{@sick} count: #{@sickCount} string: #{@sickString}"
+
+    # Could certainly refactor this down to only show meals and stringResult
+
+    render json: {meals: @meals.reverse, sick: @sick, count: @sickCount, string: @sickString, stringResult: @stringResult}
+    # render json: @meals.reverse
   end
 
   # GET /meals/1
@@ -52,3 +70,8 @@ class MealsController < ApplicationController
       params.require(:meal).permit(:title, :food_name, :sick, :sick_type, :comments, :user_id)
     end
 end
+
+
+
+
+# User.find(1).meals.where(["food_name like ? and sick = ?", "%Apples%", true])
