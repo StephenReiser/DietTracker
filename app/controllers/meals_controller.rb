@@ -3,9 +3,14 @@ class MealsController < ApplicationController
   before_action :authenticate_user
   before_action :set_meal, only: [:show, :update, :destroy]
 
+
+  # SHOULD SORT THIS STUFF TO RETURN BY CREATED DATE
+
+  
   # GET /meals
   def index
-    @meals = User.find(params['user_id']).meals
+    @meals = User.find(params['user_id']).meals.order('meals.created_at DESC')
+    @oldmeal = User.find(params['user_id']).meals
     puts "params:  #{params['user_id']}"
     puts "all params: #{params}"
     # puts "chicken: #{User.find(1).meals.where(["food_name like ? and sick = ?", "%Apples%", true])}"
@@ -14,7 +19,7 @@ class MealsController < ApplicationController
 
 
     # Seems like I need to add this whole section to create and post routes?????
-    @sick = @meals.select(:food_name).where("sick": true)
+    @sick = @oldmeal.select(:food_name).where("sick": true)
     @sickCount = @sick.group(:food_name).count
     @sickString = ''
     @sick.each {|x| @sickString.concat(" " + x[:food_name])}
@@ -26,7 +31,7 @@ class MealsController < ApplicationController
 
     # Could certainly refactor this down to only show meals and stringResult
 
-    render json: {meals: @meals.reverse, sick: @sick, count: @sickCount, string: @sickString, stringResult: @stringResult.sort_by {|key, value| value}}
+    render json: {meals: @meals, sick: @sick, count: @sickCount, string: @sickString, stringResult: @stringResult.sort_by {|key, value| value}}
     # render json: @meals.reverse
   end
 
