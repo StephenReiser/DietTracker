@@ -18,7 +18,8 @@ class MealsController < ApplicationController
     @sickCount = @sick.group(:food_name).count
     @sickString = ''
     @sick.each {|x| @sickString.concat(" " + x[:food_name])}
-    @stringResult = @sickString.downcase.split.inject(Hash.new(0)) { |h,v| h[v] += 1; h }
+    @sickNoComma = @sickString.gsub(/,/, ' ').gsub(/  /, ' ')
+    @stringResult = @sickNoComma.downcase.split.inject(Hash.new(0)) { |h,v| h[v] += 1; h }
 
     # I think it would make sense to 'clean' @sickString to make it all downcase and remove commas
     puts "apple test: #{@sick} count: #{@sickCount} string: #{@sickString}"
@@ -43,7 +44,8 @@ class MealsController < ApplicationController
       @sick = User.find(meal_params['user_id']).meals.select(:food_name).where("sick": true)
       @sickString = ''
       @sick.each {|x| @sickString.concat(" " + x[:food_name])}
-      @stringResult = @sickString.downcase.split.inject(Hash.new(0)) { |h,v| h[v] += 1; h }
+      @sickNoComma = @sickString.gsub(/,/, ' ').gsub(/  /, ' ')
+      @stringResult = @sickNoComma.downcase.split.inject(Hash.new(0)) { |h,v| h[v] += 1; h }
       render json: {meal: @meal, sickString: @stringResult.sort_by {|key, value| value}}, status: :created
     else
       render json: @meal.errors, status: :unprocessable_entity
@@ -57,7 +59,8 @@ class MealsController < ApplicationController
       @sick = User.find(meal_params['user_id']).meals.select(:food_name).where("sick": true)
       @sickString = ''
       @sick.each {|x| @sickString.concat(" " + x[:food_name])}
-      @stringResult = @sickString.downcase.split.inject(Hash.new(0)) { |h,v| h[v] += 1; h }
+      @sickNoComma = @sickString.gsub(/,/, ' ').gsub(/  /, ' ')
+      @stringResult = @sickNoComma.downcase.split.inject(Hash.new(0)) { |h,v| h[v] += 1; h }
       render json: {meal: @meal, sickString: @stringResult.sort_by {|key, value| value}}
     else
       render json: @meal.errors, status: :unprocessable_entity
@@ -72,7 +75,8 @@ class MealsController < ApplicationController
       @sick = User.find(params['user_id']).meals.select(:food_name).where("sick": true)
       @sickString = ''
       @sick.each {|x| @sickString.concat(" " + x[:food_name])}
-      @stringResult = @sickString.downcase.split.inject(Hash.new(0)) { |h,v| h[v] += 1; h }
+      @sickNoComma = @sickString.gsub(/,/, ' ').gsub(/  /, ' ')
+      @stringResult = @sickNoComma.downcase.split.inject(Hash.new(0)) { |h,v| h[v] += 1; h }
       render json: {sickString: @stringResult.sort_by {|key, value| value}}, status: :created
   end
 
