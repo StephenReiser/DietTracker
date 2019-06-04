@@ -37,8 +37,8 @@ class MealsController < ApplicationController
   # POST /meals
   def create
     
+    @meal = Meal.new(meal_params)
     if @meal.save
-      @meal = Meal.new(meal_params)
       puts "meal params: #{meal_params['user_id']}"
       @sick = User.find(meal_params['user_id']).meals.select(:food_name).where("sick": true)
       @sickString = ''
@@ -66,7 +66,14 @@ class MealsController < ApplicationController
 
   # DELETE /meals/1
   def destroy
+    puts params
     @meal.destroy
+    puts "params: #{params['user_id']}"
+      @sick = User.find(params['user_id']).meals.select(:food_name).where("sick": true)
+      @sickString = ''
+      @sick.each {|x| @sickString.concat(" " + x[:food_name])}
+      @stringResult = @sickString.downcase.split.inject(Hash.new(0)) { |h,v| h[v] += 1; h }
+      render json: {sickString: @stringResult.sort_by {|key, value| value}}, status: :created
   end
 
   private
