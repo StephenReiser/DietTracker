@@ -30,6 +30,8 @@ class UsersController < ApplicationController
   def update
     if @user.update(user_params)
       render json: @user
+      
+  # redirect_to new_session_path
     else
       render json: @user.errors, status: :unprocessable_entity
     end

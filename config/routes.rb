@@ -12,6 +12,6 @@ post 'user_token' =>
   resources :users do
     resources :meals
   end
-  
+  post 'password_reset' => 'password_reset#create'
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end
