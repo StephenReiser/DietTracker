@@ -5,6 +5,8 @@ This is the back-end part of my Unit 4 food tracker app. Originally built for my
 ### Challenges
 This was my first project using Ruby on Rails. As such, there were some challenges in planning and later implementation of certain routes. Authentication proved to be more difficult than past projects.
 
+Coming into this project one thing I wanted to do was make a full authentication system. I'd say I made in 80% of the way there and had a path to finish but due to time constraints and my desire to implement React Native, I decided to put pieces of this on hold. For example. Password reset is available, however, the password is not sent via email and is also reset immediately. Second, the password update function is also available and functioning, however no extra authentication is required, so any logged in user can change their password. Finally a ton of error checking happens but isn't apparent to the user.
+
 ### Technologies
 Ruby on Rails and Postgresql as well as some gems such as Knock and Faker
 
