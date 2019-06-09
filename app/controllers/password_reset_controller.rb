@@ -7,7 +7,7 @@ class PasswordResetController < ApplicationController
   def create
     @email = params['email']
     @user = User.where("email": @email)
-    @unhashedPW = 'Testing'
+    @unhashedPW = Faker::Alphanumeric.alphanumeric 10
     @password = Password.create(@unhashedPW)
     @user.update("password_digest": @password)
     @newUser = User.where("email": @email)
